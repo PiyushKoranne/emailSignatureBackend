@@ -1,0 +1,48 @@
+<div class="row" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;">
+	<div class="col-lg-12">
+		<div class="row bg-dark p-2">
+			<div class="col-lg-2">
+			  <a class="navbar-brand" href="#">
+				<img <% if(logoUrl) {%>src="<%= logoUrl %>"<% } %> alt="Bootstrap" > 
+			  </a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12 p-4">
+		<div class="row justify-content-evenly">
+			<div class="col-lg-3 bg-body-secondary p-4">
+				<form method="POST" action="/auth/change-password">
+					<% if(message && message.length > 0) { %><div class="alert alert-info" id="response-message"> <%= message %>  </div><% } %>
+					<div class="mb-3">
+					  <input type="hidden" name="token" <% if(token) { %> value="<%= token %>" <% } %> class="form-control" id="exampleInputPassword1">
+					</div>
+					<div class="mb-3">
+					  <input type="hidden" name="email" <% if(email) { %> value="<%= email %>" <% } %> class="form-control" id="exampleInputPassword1">
+					</div>
+					<div class="mb-3">
+					  <label for="exampleInputPassword1" class="form-label">New Password</label>
+					  <input required name="password" type="password" class="form-control" id="new-password">
+					</div>
+					<div class="mb-3">
+					  <label for="exampleInputPassword1" onkeyup="pswdcheck()" class="form-label">Confirm Password</label>
+					  <input required name="confirm_password" type="password" class="form-control" id="confirm-password">
+					</div>
+					<button id="pswd-submit-btn" type="submit" class="btn btn-primary">Update</button>
+				</form>
+				<script>
+					function pswdcheck() {
+						const pswd1 = document.getElementById('new-password').innerHTML;
+						const pswd2 = document.getElementById('confirm-password').innerHTML;
+						if(pswd1 !== pswd2){
+							document.getElementById('response-message').innerHTML = "Passwords dont Match!"
+						} else {
+							document.getElementById('response-message').innerHTML = ""
+						}
+					}
+				</script>
+			</div>
+		</div>
+	</div>
+</div>

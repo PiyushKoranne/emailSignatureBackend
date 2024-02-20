@@ -1,0 +1,638 @@
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+    :root {
+      --header-height: 3rem;
+      --nav-width: 68px;
+      --first-color: #1375B9;
+      --first-color-light: #b5deff;
+      --white-color: #F7F6FB;
+      --body-font: 'Nunito', sans-serif;
+      --normal-font-size: 1rem;
+      --z-fixed: 100
+    }
+
+    *,
+    ::before,
+    ::after {
+      box-sizing: border-box
+    }
+
+    body {
+      position: relative;
+      margin: var(--header-height) 0 0 0;
+      padding: 0 1rem;
+      font-family: var(--body-font);
+      font-size: var(--normal-font-size);
+      transition: .5s
+    }
+
+    a {
+      text-decoration: none
+    }
+
+    .header {
+      width: 100%;
+      height: var(--header-height);
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      background-color: var(--white-color);
+      z-index: var(--z-fixed);
+      transition: .5s;
+      box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.11);
+    }
+
+    .header_toggle {
+      color: var(--first-color);
+      font-size: 1.5rem;
+      cursor: pointer
+    }
+
+    .header_img {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .header_img::after{
+      content: "";
+      display: block;
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      bottom:0px;
+      right: 4px;
+      background-color: #71dd37;
+    }
+
+    .header_img img {
+      width: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      border:2px solid #009FEB;
+    }
+
+    .l-navbar {
+      position: fixed;
+      top: 0;
+      left: -30%;
+      width: var(--nav-width);
+      height: 100vh;
+      /* background-color: var(--first-color); */
+      background: #2D2727;
+      padding: .5rem 1rem 0 0;
+      transition: .5s;
+      z-index: var(--z-fixed)
+    }
+
+    .nav {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden
+    }
+
+    .nav_logo,
+    .nav_link {
+      display: grid;
+      grid-template-columns: max-content max-content;
+      align-items: center;
+      column-gap: 1rem;
+      padding: .5rem 0 .5rem 1.5rem
+    }
+
+    .nav_logo {
+      margin-bottom: 2rem
+    }
+
+    .nav_logo-icon {
+      font-size: 1.25rem;
+      color: var(--white-color)
+    }
+
+    .nav_logo-name {
+      color: var(--white-color);
+      font-weight: 700
+    }
+
+    .nav_link {
+      position: relative;
+      color: var(--first-color-light);
+      margin-bottom: 1.5rem;
+      transition: .3s
+    }
+
+    .nav_link:hover {
+      color: var(--white-color)
+    }
+
+    .nav_icon {
+      font-size: 1.25rem
+    }
+
+    .shownav {
+      left: 0
+    }
+
+    .body-pd {
+      padding-left: calc(var(--nav-width) + 1rem)
+    }
+
+    .active {
+      color: var(--white-color)
+    }
+
+    .active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 2px;
+      height: 32px;
+      background-color: var(--white-color)
+    }
+
+    .height-100 {
+      height: 100vh
+    }
+
+    @media screen and (min-width: 768px) {
+      body {
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem)
+      }
+
+      .header {
+        height: calc(var(--header-height) + 1rem);
+        padding: 0 2rem 0 calc(var(--nav-width) + 2rem)
+      }
+
+      .header_img {
+        width: 40px;
+        height: 40px
+      }
+
+      .header_img img {
+        width: 45px
+      }
+
+      .l-navbar {
+        left: 0;
+        padding: 1rem 1rem 0 0
+      }
+
+      .shownav {
+        width: calc(var(--nav-width) + 156px)
+      }
+
+      .body-pd {
+        padding-left: calc(var(--nav-width) + 188px)
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+      const showNavbar = (toggleId, navId, bodyId, headerId) => {
+        const toggle = document.getElementById(toggleId),
+          nav = document.getElementById(navId),
+          bodypd = document.getElementById(bodyId),
+          headerpd = document.getElementById(headerId)
+
+        // Validate that all variables exist
+        if (toggle && nav && bodypd && headerpd) {
+          toggle.addEventListener('click', () => {
+            // show navbar
+            nav.classList.toggle('shownav')
+            // change icon
+            toggle.classList.toggle('bx-x')
+            // add padding to body
+            bodypd.classList.toggle('body-pd')
+            // add padding to header
+            headerpd.classList.toggle('body-pd')
+          })
+        }
+      }
+
+      showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+      /*===== LINK ACTIVE =====*/
+      const linkColor = document.querySelectorAll('.nav_link')
+
+      function colorLink() {
+        console.log('Color Link Function called ->', window.location.pathname);
+        const path = window.location.pathname;
+        if(path.startsWith('/dashboard')){
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-dashboard").classList.add('active')
+        } else if(path.startsWith('/signature-templates')) {
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-sig-templates").classList.add('active')
+        } else if(path.startsWith('/add-template')){
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-add-template").classList.add('active')
+        } else if(path.startsWith('/manage-users')){
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-users").classList.add('active')
+        } else if(path.startsWith('/manage-layout')){
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-layout").classList.add('active')
+        } else if(path.startsWith('/settings')){
+          linkColor.forEach(item => item.classList.remove('active'));
+          document.getElementById("nav-link-settings").classList.add('active')
+        }  
+      }
+      // Your code to run since DOM is loaded and ready
+      colorLink();
+    });
+
+  </script>
+  <header class="header" id="header">
+    <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    <div class="header_img"> <img src="/logo/logo.png" alt="" width="24"> </div>
+  </header>
+  <div class="l-navbar" id="nav-bar">
+    <nav class="nav">
+      <div> 
+        <a href="#" class="nav_logo"> 
+          <!-- <img src="/logo/IT_Training_Logo_White.svg" width="24" alt="logo">  -->
+          <img src="/logo/logo.png" alt="" width="24">
+          <span class="nav_logo-name">Email Signature</span> 
+        </a>
+        <div class="nav_list"> 
+          <a href="/dashboard" id="nav-link-dashboard" class="nav_link active"> 
+            <i class='bx bx-grid-alt nav_icon'></i>
+            <span class="nav_name">Dashboard</span> 
+          </a> 
+          <a href="/signature-templates" id="nav-link-sig-templates" class="nav_link"> 
+            <i class='bx bx-message-square-detail nav_icon'></i> 
+            <span class="nav_name">Signature Templates</span> 
+          </a> 
+          <a href="/add-template" id="nav-link-add-template" class="nav_link"> 
+            <i class='bx bx-add-to-queue nav_icon'></i> 
+            <span class="nav_name">Add Template</span> 
+          </a> 
+          <a href="/manage-users" id="nav-link-users" class="nav_link"> 
+            <i class='bx bx-user nav_icon'></i> 
+            <span class="nav_name">Users</span> 
+          </a> 
+          <a href="/manage-layout" id="nav-link-layout" class="nav_link"> 
+            <i class='bx bx-layout nav_icon'></i> 
+            <span class="nav_name">Layout</span> 
+          </a>
+          <a href="/settings" id="nav-link-settings" class="nav_link"> 
+            <i class='bx bx-cog nav_icon'></i> 
+            <span class="nav_name">Settings</span> 
+          </a>
+        </div>
+      </div> 
+      <a href="/logout" class="nav_link"> 
+        <i class='bx bx-log-out nav_icon'></i> 
+        <span class="nav_name">SignOut</span> 
+      </a>
+    </nav>
+  </div>
+<div class="row overflow-hidden">
+	<div class="overflow-auto bg-body-tertiary col-lg-12 p-4">
+		<!-- Toastr -->
+		<link rel="stylesheet" type="text/css"
+			href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+		<% if(message !="" ){ %>
+			<script>
+				toastr.options = {
+					"closeButton": true,
+					"newestOnTop": false,
+					"progressBar": true,
+					"positionClass": "toast-top-right",
+					"preventDuplicates": false,
+					"onclick": null,
+					"showDuration": "300",
+					"hideDuration": "1000",
+					"timeOut": "5000",
+					"extendedTimeOut": "1000",
+					"showEasing": "swing",
+					"hideEasing": "linear",
+					"showMethod": "fadeIn",
+					"hideMethod": "fadeOut"
+				}
+
+					if (message[0].type == 'success') { 
+						toastr.success("<%= message[0].value %>")
+					} else if (message[0].type == 'failure') {
+						toastr.error("<%= message[0].value %>")
+					}
+			</script>
+
+			<% } %>
+				<div class="row mb-4">
+					<div class="col">
+						<h3>Add Templates</h3>
+					</div>
+				</div>
+				<script>
+						window.addEventListener('DOMContentLoaded', () => {
+							var editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
+								lineNumbers: true,
+								mode: 'xml',
+								htmlMode: true,
+							})
+						})
+				</script>
+				<form method="POST" action="/add-template" enctype="multipart/form-data">
+					<div class="row space-evenly">
+						<div class="col-lg-12">
+							<div class="row p-4">
+								<div class="col-lg-6 mb-3">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="searchByName"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">CATEGORY:</label></div>
+										<div class="col-12">
+											<input type="hidden" name="page" value="<%= page %>">
+											<select name="category" class="form-select"
+												aria-label="Default select example">
+												<option
+													value="<%= typeof chosen_template_category == 'undefined' ? '': chosen_template_category %>">
+													<%= typeof chosen_template_category=='undefined' ? 'Choose Category'
+														: chosen_template_category %>
+												</option>
+													<% all_categories.forEach((item)=>{ %>
+													<option value="<%= item.category %>">
+														<%= item.category %>
+													</option>
+													<% })%>
+											</select>
+										</div>
+									</div>
+
+									<input name="template_id" type="hidden"
+										value="<%= typeof chosen_template_id == 'undefined' ? '':chosen_template_id %>">
+								</div>
+
+								<div class="col-lg-6">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="searchByName"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">TIER:</label></div>
+										<div class="col-12">
+											<select name="tier" class="form-select" required
+												aria-label="Default select example">
+												<option
+													value="<%= typeof chosen_template_tier == 'undefined' ? '': chosen_template_tier %>">
+													<%= typeof chosen_template_tier=='undefined' ? 'Select Tier' :
+														chosen_template_tier %>
+												</option>
+												<option value="Tier 1">Tier 1</option>
+												<option value="Tier 2">Tier 2</option>
+												<option value="Tier 3">Tier 3</option>
+											</select>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-lg-6 mb-3">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="AddName"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">SEARCH BY NAME::</label></div>
+										<div class="col-12">
+											<input required
+												value="<%= typeof chosen_template_name == 'undefined' ? '': chosen_template_name %>"
+												name="template_name" type="text" class="form-control" id="AddName"
+												placeholder="Add Name">
+										</div>
+									</div>
+
+								</div>
+								<div class="col-lg-6 mb-3">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="AddCustomCategory"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">CUSTOM CATEGORY:</label></div>
+										<div class="col-12">
+											<input
+												value="<%= typeof chosen_template_custom_category == 'undefined' ? '': chosen_template_custom_category %>"
+												name="custom_category" type="text" class="form-control"
+												id="AddCustomCategory" placeholder="Add Category">
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6 mb-3">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="AddPrice"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">PRICE:</label></div>
+										<div class="col-12">
+											<input required
+												value="<%= typeof chosen_template_price == 'undefined' ? '': chosen_template_price %>"
+												name="template_price" type="number" class="form-control" id="AddPrice"
+												placeholder="Add Price">
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6 mb-3">
+									<div class="mb-3 row">
+										<div class="col-12"><label for="AddPreview"
+												class="form-label text-body-tertiary fw-bold"
+												style="font-size:12px">PREVIEW IMAGE:</label></div>
+										<div class="col-12">
+											<input
+												value="<%= typeof chosen_template_img == 'undefined' ? '': chosen_template_img %>"
+												name="template" type="file" class="form-control" id="AddPreview"
+												placeholder="Add Preview">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12 mb-3 mt-3">
+							<div class="row justify-content-evenly">
+								<div class="col">
+									<h5>Add Template Code</h5>
+								</div>
+							</div>
+							<div class="border border-primary">
+								<textarea name="template_code" class="form-control"placeholder="Leave a comment here" id="codeEditor" style="height: 400px"><%= typeof chosen_template_data == 'undefined' ? '': chosen_template_data %></textarea>
+							</div>
+						</div>
+						<div class="col-lg-6 mb-3 mt-3">
+							<h6 class="mb-3">Template Fillers: </h6>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Full Name</span>
+									<input name="filler_fullName" value="<%= typeof filler_fullName == 'undefined' ? '': filler_fullName %>" type="text" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Designation</span>
+									<input name="filler_designation" value="<%= typeof filler_designation == 'undefined' ? '': filler_designation %>" type="text" class="form-control" placeholder="Designation" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Contact</span>
+									<input name="filler_contact" value="<%= typeof filler_contact == 'undefined' ? '': filler_contact %>" type="text" class="form-control" placeholder="Contact" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Email</span>
+									<input name="filler_email" value="<%= typeof filler_email == 'undefined' ? '': filler_email %>" type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Website</span>
+									<input name="filler_website" value="<%= typeof filler_website == 'undefined' ? '': filler_website %>" type="text" class="form-control" placeholder="Website" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Address</span>
+									<input name="filler_address" value="<%= typeof filler_address == 'undefined' ? '': filler_address %>" type="text" class="form-control" placeholder="Address" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="mb-3">
+  									<label for="formFile" class="form-label">Default Profile Pic</label>
+  									<input class="form-control" name="filler_profileImage" type="file" id="formFile">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Image Size</span>
+									<input name="filler_image_size" value="<%= typeof filler_image_size == 'undefined' ? '': filler_image_size %>" type="text" class="form-control" placeholder="Address" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">Banner Size</span>
+									<input name="filler_banner_size" value="<%= typeof filler_banner_size == 'undefined' ? '': filler_banner_size %>" type="text" class="form-control" placeholder="Address" aria-label="Username" aria-describedby="basic-addon1">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="row">
+								<div class="col-lg-6 mb-3 p-4">
+									<div class="row">
+										<div class="col">
+											<p class="fw-bold text-primary">CTA Data : </p>
+											<div class="row">
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.disclaimer) { %> checked <% }}%>
+															name="disclaimer" class="form-check-input" type="checkbox"
+															value="true" id="disclaimerSwitch">
+															<label class="form-check-label fw-bold"
+																for="disclaimerSwitch">
+																Disclaimer
+															</label>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.quote) { %> checked <% }}%>
+															name="quote" class="form-check-input" type="checkbox"
+															value="true" id="quoteSwitch">
+															<label class="form-check-label fw-bold"
+																for="quoteSwitch">
+																Quote
+															</label>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.video) { %> checked <% }}%>
+															name="video" class="form-check-input" type="checkbox"
+															value="true" id="videoSwitch">
+															<label class="form-check-label fw-bold"
+																for="videoSwitch">
+																Video
+															</label>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.banner) { %> checked <% }}%>
+															name="banner" class="form-check-input" type="checkbox"
+															value="true" id="bannerSwitch">
+															<label class="form-check-label fw-bold"
+																for="bannerSwitch">
+																Banner
+															</label>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.applink) { %> checked <% }}%>
+															name="applink" class="form-check-input" type="checkbox"
+															value="true" id="appLinkSwitch">
+															<label class="form-check-label fw-bold"
+																for="appLinkSwitch">
+																Applink
+															</label>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-check form-switch">
+														<input role="switch" <% if(chosen_template_cta){
+															if(chosen_template_cta?.feedback) { %> checked <% }}%>
+															name="feedback" class="form-check-input" type="checkbox"
+															value="true" id="feedbackSwitch">
+															<label class="form-check-label fw-bold"
+																for="feedbackSwitch">
+																Custom / Feedback
+															</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6 mb-3 mt-3">
+									<% if(typeof chosen_template_img !='undefined' ) { %>
+										<div class="row h-100">
+											<div class="col p-4">
+												<img
+													src="/templates/<%= typeof chosen_template_img =='undefined' ? '' : chosen_template_img %>">
+											</div>
+										</div>
+										<% } else { %>
+											<div class="row h-100">
+												<div class="col p-4 d-flex align-items-center justify-content-center"
+													style="height:100%;background-color:#f0f0f1;">
+													<h4 class="text-secondary">Preview Unavailable</h4>
+												</div>
+											</div>
+											<% } %>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12 mb-3 mt-3">
+							<div class="row ">
+								<div class="col-lg-4">
+									<button type="submit" class="btn btn-primary">Add Template</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+	</div>
+</div>

@@ -1,0 +1,177 @@
+<div class="vh-100 row">
+	<%- include('./common/header') %>
+	<div class="overflow-auto vh-100 col-lg-10 p-4 bg-body-tertiary">
+		<% if(message !=""){ %>
+			<script>
+					Toastify({
+						text: "<%= message[0].value %>",
+						duration: 3000,
+						destination: "https://github.com/apvarun/toastify-js",
+						newWindow: true,
+						close: true,
+						gravity: "top", // `top` or `bottom`
+						position: "right", // `left`, `center` or `right`
+						stopOnFocus: true, // Prevents dismissing of toast on hover
+						style: {
+							<% if(message[0].type == 'success') { %>
+								background: "linear-gradient(to right, #00b09b, #96c93d)",
+							<% } else if(message[0].type == 'failure') { %>	
+								background: "linear-gradient(to right, #F24C3D, #B04759)",
+							<% } %>
+						},
+						onClick: function(){} // Callback after click
+					}).showToast();
+				</script>
+			<% } %>
+		<div class="row mb-4">
+			<div class="col">
+				<h3>Add Templates</h3>
+			</div>
+		</div>
+		<script>
+			window.addEventListener('DOMContentLoaded', ()=>{
+				var editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
+					lineNumbers:true,
+					mode:'xml',
+					htmlMode:true,
+				})
+			})
+		</script>
+		<form method="POST" action="/admin/add-template" enctype="multipart/form-data">
+		<div class="row space-evenly">
+			<div class="col-lg-6 mb-3">
+				<input name="template_id" type="hidden" value="<%= typeof chosen_template_id == 'undefined' ? '':chosen_template_id %>" >
+				<select name="category" class="form-select" aria-label="Default select example">
+					<option value="<%= typeof chosen_template_category == 'undefined' ? '': chosen_template_category %>"><%= typeof chosen_template_category == 'undefined' ? 'Choose Category': chosen_template_category %></option>
+					<% all_categories.forEach((item) =>{ %>
+						<option value="<%= item.category %>" ><%= item.category %></option>
+					<% })%>
+				</select>
+			</div>
+
+			<div class="col-lg-6">
+				<select name="tier" class="form-select" aria-label="Default select example">
+					<option value="<%= typeof chosen_template_tier == 'undefined' ? '': chosen_template_tier %>"><%= typeof chosen_template_tier == 'undefined' ? 'Select Tier': chosen_template_tier %></option>
+						<option value="Tier 1" >Tier 1</option>
+						<option value="Tier 2" >Tier 2</option>
+						<option value="Tier 3" >Tier 3</option>
+				</select>
+			</div>
+			<div class="col-lg-6 mb-3">
+				<div class="form-group">
+					<label for="AddName">Add Name</label>
+					<input value="<%= typeof chosen_template_name == 'undefined' ? '': chosen_template_name %>" name="template_name" type="text" class="form-control" id="AddName" placeholder="Add Name">
+				</div>
+			</div>
+			<div class="col-lg-6 mb-3">
+				<div class="form-group">
+					<label for="AddCustomCategory">Add Category</label>
+					<input value="<%= typeof chosen_template_custom_category == 'undefined' ? '': chosen_template_custom_category %>" name="custom_category" type="text" class="form-control" id="AddCustomCategory" placeholder="Add Category">
+				</div>
+			</div>
+			<div class="col-lg-6 mb-3">
+				<div class="form-group">
+					<label for="AddPrice">Add Price</label>
+					<input value="<%= typeof chosen_template_price == 'undefined' ? '': chosen_template_price %>" name="template_price" type="number" class="form-control" id="AddPrice" placeholder="Add Price">
+				</div>
+			</div>
+			<div class="col-lg-6 mb-3">
+				<div class="form-group">
+					<label for="AddPreview">Add Template Preview</label>
+					<input value="<%= typeof chosen_template_img == 'undefined' ? '': chosen_template_img %>" name="template" type="file" class="form-control" id="AddPreview" placeholder="Add Preview">
+				</div>
+			</div>
+			<div class="col-lg-12 mb-3 mt-3">
+				<div class="row justify-content-evenly">
+					<div class="col"><h5>Add Template Code</h5></div>
+				</div>
+				<div class="border border-primary">
+					<textarea name="template_code" class="form-control" placeholder="Leave a comment here" id="codeEditor" style="height: 400px">
+						<%= typeof chosen_template_data == 'undefined' ? '': chosen_template_data %>
+					</textarea>
+				</div>
+			</div>
+			
+			<div class="col-lg-6 mb-3">
+				<div class="row">
+					<div class="col-lg-6">
+						<p class="fw-bold text-primary">CTA Data : </p>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.disclaimer) { %> checked <% }}%> name="disclaimer" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Disclaimer
+								</label>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.quote) { %> checked <% }}%> name="quote" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Quote
+								</label>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.video) { %> checked <% }}%> name="video" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Video
+								</label>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.banner) { %> checked <% }}%> name="banner" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Banner
+								</label>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.applink) { %> checked <% }}%> name="applink" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Applink
+								</label>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-check">
+								<input <% if(chosen_template_cta){ if(chosen_template_cta?.feedback) { %> checked <% }}%> name="feedback" class="form-check-input" type="checkbox" value="true" id="flexCheckDefault">
+								<label class="form-check-label fw-bold" for="flexCheckDefault">
+									Custom / Feedback
+								</label>
+								</div>
+							</div>
+						</div>  
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 mb-3 mt-3">
+				<% if(typeof chosen_template_img != 'undefined') { %>
+				<div class="row ">
+					<div class="col bg-body-secondary p-4">
+						<img src="/templates/<%= typeof chosen_template_img =='undefined' ? '' : chosen_template_img %>" >  
+					</div>
+				</div>
+				<% } else { %>
+					<div class="row ">
+						<div class="col bg-body-secondary p-4">
+							<h4 class="text-secondary" >Preview Unavailable</h4>
+						</div>
+					</div>
+				<% } %>
+			</div>
+			<div class="col-lg-12 mb-3 mt-3">
+				<div class="row ">
+					<div class="col-lg-4">
+						<button type="submit" class="btn btn-primary">Add Template</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

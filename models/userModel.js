@@ -1,0 +1,74 @@
+const mongoose = require('mongoose');
+const UserSchema = new mongoose.Schema({
+    username:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+	new_user:Boolean,
+	initial_login_key:Number,
+	initial_login_status:Boolean,
+    is_logged_in:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    access_token:{
+        type:String,
+        required:true,
+        default:'NOT_LOGGED'
+    },
+    otp_token:{
+        type:String
+    },
+    forgot_token:{
+    	type:String
+    },
+	userData:{
+		fullName:String,
+		logoName:String,
+		designation:String,
+		phone:String,
+		location:String,
+		email:String,
+		website:String,
+		profileImage:String,
+		banner:String,
+		logoImage:String,
+		facebook:String,
+		instagram:String,
+		youtube:String,
+		twitter:String,
+		linkedIn:String,
+		pinterest:String,
+		skype:String,
+		whatsapp:String,
+		disclaimer:String,
+		video:String,
+		video_img:String,
+		video_title:String,
+		video_description:String,
+		quote:String,
+		playStoreAppLink:String,
+		appleStoreAppLink:String,
+		feedback:String,
+		visited:{
+			profile:Boolean,
+			details:Boolean,
+			social:Boolean,
+			cta:Boolean
+		}
+	},
+	template_id:String
+},{timestamps:true});
+
+const userModel = mongoose.model('User', UserSchema);
+
+module.exports = {userModel}

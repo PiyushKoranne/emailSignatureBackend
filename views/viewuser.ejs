@@ -1,0 +1,54 @@
+<div class="overflow-hidden row">
+	<div class="col-lg-12 p-4 bg-body-tertiary">
+		<% if(message !=""){ %>
+			<script>
+				
+			</script>
+			<% } %>
+		<div class="row">
+			<div class="col">
+				<h3>User Details: </h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="row">
+					<div class="col-4">
+						<img src="/profile/placeholder.png" class="img-fluid img-thumbnail"> 
+					</div>
+					<div class="col-lg-8">
+					<div class="row">
+					<div class="col-12">
+						<div class="row">
+							<div class="col-auto text-primary fw-bold">EMAIL:</div>
+							<div class="col-auto"><%= data?.email %></div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row">
+							<div class="col-auto  text-primary fw-bold">USERNAME:</div>
+							<div class="col-auto"><%= data?.username %></div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row">
+							<div class="col-auto  text-primary fw-bold">STATUS:</div>
+							<div class="col-auto fw-bold text-secondary"><%= data?.is_logged_in ? 'ONLINE' : 'OFFLINE' %></div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row">
+							<div class="col-auto  text-primary fw-bold">ROLE:</div>
+							<div class="col-auto">
+								<div class="badge rounded-pill text-bg-dark"><%= data.role %></div>
+							</div>
+						</div>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>

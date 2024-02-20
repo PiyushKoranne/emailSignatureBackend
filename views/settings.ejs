@@ -1,0 +1,88 @@
+<div class="overflow-hidden row">
+        <div class="col-lg-12 p-4 bg-body-tertiary overflow-auto">
+		<!-- Toastr -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <% if(message !=""){ %>
+        <script>
+                toastr.options = {
+                  "closeButton": true,
+                  "newestOnTop": false,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                }
+                <% if(message[0].type == 'success') { %>
+                        toastr.success("<%= message[0].value %>")
+                <% } else if (message[0].type == 'failure') { %>
+                        toastr.error("<%= message[0].value %>")
+                <% } %>
+        </script>
+        <% } %>
+                <div class="row mb-3">
+                        <div class="col">
+                                <h3>Settings: </h3>
+                        </div>
+                </div>
+		<div class="row mt-3 shadow-sm rounded p-4 bg-white">
+                        <div class="col-lg-12">
+                                <p class="text-primary fw-bold">Update Profile:</p>
+                        </div>
+			<div class="col-lg-6">
+				<div class="mb-3">
+					<img src="/profile/<%= profileImage || "_avatar.jpg" %>" alt="profile pic" height="200px" width="200px">
+				</div>
+			</div>
+			<div class="col-lg-12 mb-3">
+				<form id="profile-pic-form" method="POST" enctype="multipart/form-data" action="/update-admin-profile">
+					 <div class="input-group">
+                                                <span class="input-group-text fw-bold" id="basic-addon3">Upload New Image:</span>
+						<input type="hidden" name="username" value="<%= username || ''%>">
+                                                <input name="image" type="file" accept="image/*" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+				
+				</form>
+			</div>
+			<div class="col-lg-12">
+				<div class="mb-3">
+                                <button type="submit" form="profile-pic-form" class="btn btn-warning">✔️ Update Profile</button>
+                                </div>
+			</div>
+		</div>
+                <div class="row mt-3 shadow-sm rounded p-4 bg-white">
+			<div class="col-lg-12">
+				<p class="text-primary fw-bold">Change Passwords:</p>
+			</div>
+			<form method="POST" action="/reset-password">
+			<div class="col-lg-6">
+				<div class="mb-3">
+  					<div class="input-group">
+   						<span class="input-group-text fw-bold" id="basic-addon3">Registered Email</span>
+    						<input value="<%= email %>" name="email" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  					</div>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="mb-3">
+				<p> Send password change verification email </p>
+				<button type="submit" class="btn btn-warning">✔️ Send</button>
+				</div>
+			</div>
+			</form>
+                </div>
+		<div class="row mt-3 rounded p-4 bg-white">
+			Other settings
+		</div>
+
+        </div>
+</div>
+
